@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contador para el sábado</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
+            margin: 0;
+            background-color: #000;
+            color: #fff;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 40vh;
+            height: 5vh;
+            font-weight: bold;
+            margin: 0 0 1rem 0;
+            text-transform: uppercase;
+            letter-spacing: 0.7rem;
+            line-height: 0.9;
+            white-space: nowrap;
+            transform: scale(2);
+        }
+
+        /* Contador */
+        #countdown {
+            font-size: 17vw;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            padding: 1rem;
+            border-radius: 0.75rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            white-space: nowrap;
+        }
+
+        /* Texto inferior derecho fachero en blanco */
+        .mensaje {
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            font-size: 1.8vw;
+            font-weight: bold;
+            color: #fff;
+            text-shadow:
+                0 0 5px #fff,
+                0 0 10px #fff,
+                0 0 20px #fff,
+        }
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 20vw;
+                margin-bottom: 4rem;
+            }
+            #countdown {
+                font-size: 18vw;
+            }
+            .mensaje {
+                font-size: 3.5vw;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>CONTADOR PARA CONGO</h1>
+    <div id="countdown">Cargando...</div>
+    <div class="mensaje">Nosotro tenemos que hace lo de nosotro</div>
+
+    <script>
+        function getNextSaturdayMidnight() {
+            const now = new Date();
+            const target = new Date(now);
+            let currentDay = now.getDay();
+            let daysToAdd = 0;
+
+            if (currentDay === 6) {
+                if (now.getHours() > 0 || now.getMinutes() > 0 || now.getSeconds() > 0) {
+                    daysToAdd = 7;
+                }
+            } else {
+                daysToAdd = (6 - currentDay);
+            }
+
+            target.setDate(now.getDate() + daysToAdd);
+            target.setHours(0, 0, 0, 0);
+            return target;
+        }
+
+        const countdownDisplay = document.getElementById('countdown');
+
+        function updateCountdown() {
+            const now = new Date();
+            const targetDate = getNextSaturdayMidnight();
+            const timeRemaining = targetDate.getTime() - now.getTime();
+
+            if (timeRemaining <= 0) {
+                countdownDisplay.textContent = "Hora de hacer lo de nosotro";
+                clearInterval(countdownInterval);
+                return;
+            }
+
+            const totalSeconds = Math.floor(timeRemaining / 1000);
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+
+            const formatTime = (num) => String(num).padStart(2, '0');
+            countdownDisplay.textContent = `${formatTime(hours)}:${formatTime(minutes)}:${formatTime(seconds)}`;
+        }
+
+        updateCountdown();
+        const countdownInterval = setInterval(updateCountdown, 1000);
+    </script>
+</body>
+</html>
