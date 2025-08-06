@@ -63,6 +63,22 @@
                 0 0 10px #fff,
                 0 0 20px #fff;
         }
+
+        /* Botón de sonido */
+        #unmute-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 30px;
+            font-size: 1.2rem;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            z-index: 10;
+        }
+
         @media (max-width: 768px) {
             h1 {
                 font-size: 15vw;
@@ -78,6 +94,10 @@
             .mensaje {
                 font-size: 2.5vw;
             }
+            #unmute-btn {
+                font-size: 1rem;
+                padding: 8px 16px;
+            }
         }
     </style>
 </head>
@@ -87,26 +107,34 @@
         Tu navegador no soporta video HTML5.
     </video>
 
+    <button id="unmute-btn">🔊 Activar sonido</button>
+
     <h1>CONTADOR PARA CONGO</h1>
     <div id="countdown">Cargando...</div>
     <div class="mensaje">Nosotro tenemos que hace lo de nosotro</div>
 
     <script>
-        // Ajustar el video según dispositivo
         const video = document.getElementById('video-background');
+        const unmuteBtn = document.getElementById('unmute-btn');
         const userAgent = navigator.userAgent;
 
+        // Configuración de video según dispositivo
         if (/iPhone|iPad|iPod/i.test(userAgent)) {
-            // Configuración específica para iOS
             video.style.objectFit = "cover";
         } else if (/Android/i.test(userAgent)) {
-            // Configuración específica para Android
             video.style.objectFit = "cover";
         } else {
-            // Configuración para PC (ya está por defecto en fill)
             video.style.objectFit = "fill";
         }
 
+        // Botón para activar sonido
+        unmuteBtn.addEventListener('click', () => {
+            video.muted = false;
+            video.play();
+            unmuteBtn.style.display = 'none';
+        });
+
+        // Función para obtener próximo sábado a medianoche
         function getNextSaturdayMidnight() {
             const now = new Date();
             const target = new Date(now);
