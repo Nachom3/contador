@@ -25,13 +25,12 @@
             left: 50%;
             width: 100vw;
             height: 100vh;
-            object-fit: fill;
+            object-fit: fill; /* Configuración por defecto: PC */
             transform: translate(-50%, -50%);
             z-index: -1;
         }
         h1 {
             font-size: 40vh;
-            height: 1h;
             font-weight: bold;
             margin: 0 0 1rem 0;
             text-transform: uppercase;
@@ -62,33 +61,49 @@
             text-shadow:
                 0 0 5px #fff,
                 0 0 10px #fff,
-                0 0 20px #fff,
+                0 0 20px #fff;
         }
         @media (max-width: 768px) {
             h1 {
                 font-size: 8vw;
                 margin-bottom: 2rem;
+                transform: scale(1); /* En móviles eliminamos el doble escalado */
             }
             #countdown {
                 font-size: 15vw;
             }
             .mensaje {
-                font-size: vw;
+                font-size: 4vw;
             }
         }
     </style>
 </head>
 <body>
     <video autoplay muted loop playsinline id="video-background">
-    <source src="elem/nosotro.mp4" type="video/mp4">
-    Tu navegador no soporta video HTML5.
-</video>
-    <h1>CONTADOR PARA CONGO
-    </h1>
+        <source src="elem/nosotro.mp4" type="video/mp4">
+        Tu navegador no soporta video HTML5.
+    </video>
+
+    <h1>CONTADOR PARA CONGO</h1>
     <div id="countdown">Cargando...</div>
     <div class="mensaje">Nosotro tenemos que hace lo de nosotro</div>
 
     <script>
+        // Ajustar el video según dispositivo
+        const video = document.getElementById('video-background');
+        const userAgent = navigator.userAgent;
+
+        if (/iPhone|iPad|iPod/i.test(userAgent)) {
+            // Configuración específica para iOS
+            video.style.objectFit = "cover";
+        } else if (/Android/i.test(userAgent)) {
+            // Configuración específica para Android
+            video.style.objectFit = "cover";
+        } else {
+            // Configuración para PC (ya está por defecto en fill)
+            video.style.objectFit = "fill";
+        }
+
         function getNextSaturdayMidnight() {
             const now = new Date();
             const target = new Date(now);
