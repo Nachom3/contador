@@ -10,7 +10,6 @@
             font-family: 'Inter', sans-serif;
             height: 100vh;
             margin: 0;
-            background-color: #000;
             color: #fff;
             overflow: hidden;
             display: flex;
@@ -19,10 +18,19 @@
             align-items: center;
             text-align: center;
         }
-
+        #video-background {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 100vw;
+            height: 100vh;
+            object-fit: fill;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+        }
         h1 {
             font-size: 40vh;
-            height: 5vh;
+            height: 1h;
             font-weight: bold;
             margin: 0 0 1rem 0;
             text-transform: uppercase;
@@ -39,7 +47,6 @@
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
             padding: 1rem;
             border-radius: 0.75rem;
-            background-color: rgba(255, 255, 255, 0.1);
             white-space: nowrap;
         }
 
@@ -50,7 +57,7 @@
             right: 30px;
             font-size: 1.8vw;
             font-weight: bold;
-            color: #fff;
+            color: #000000;
             text-shadow:
                 0 0 5px #fff,
                 0 0 10px #fff,
@@ -65,13 +72,18 @@
                 font-size: 15vw;
             }
             .mensaje {
-                font-size: 2vw;
+                font-size: vw;
             }
         }
     </style>
 </head>
 <body>
-    <h1>CONTADOR PARA CONGO</h1>
+    <video autoplay muted loop playsinline id="video-background">
+    <source src="elem/nosotro.mp4" type="video/mp4">
+    Tu navegador no soporta video HTML5.
+</video>
+    <h1>CONTADOR PARA CONGO
+    </h1>
     <div id="countdown">Cargando...</div>
     <div class="mensaje">Nosotro tenemos que hace lo de nosotro</div>
 
