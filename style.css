@@ -65,8 +65,8 @@ h1 {
     position: fixed;
     bottom: 20px;
     left: 30px;
-    font-size: 1.2rem;
-    background: rgba(0,0,0,0.6);
+    font-size: 3rem;
+    background: rgba(0, 0, 0, 0.6);
     color: white;
     border: none;
     padding: 10px 20px;
@@ -74,44 +74,51 @@ h1 {
     cursor: pointer;
     z-index: 10;
 }
-
-/* Navbar arriba a la izquierda */
 .navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    padding: 20px 30px;
-    display: flex;
-    gap: 20px;
-    z-index: 100;
+  position: fixed;
+  top: 0;
+  width: 98%;
+  padding: 30px 40px;
+  display: flex;
+  justify-content: space-between; /* separa izquierda y derecha */
+  align-items: center;
+  z-index: 100;
 }
 
-.navbar a {
-    font-size: 1.2rem;
-    font-weight: bold;
-    background: white;
-    color: black;
-    padding: 10px 20px;
-    border-radius: 10px;
-    text-decoration: none;
-    transition: transform 0.2s ease-in-out;
+/* Logo a la izquierda con círculo */
+.navbar .logo {
+  width:80px;
+  height: 80px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  border: 2px solid white;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
 }
 
-.navbar a:hover {
-    transform: scale(1.05);
+.navbar .logo:hover {
+  transform: scale(1.1);
 }
 
-.navbar2 {
-    position: fixed;
-    top: 0;
-    left: 0;
-    padding: 20px 30px;
-    display: flex;
-    gap: 20px;
-    z-index: 100;
+/* Flecha a la derecha sin círculo */
+.navbar .flecha {
+  width: 80px;
+  height: 80px;
+  border-radius: 0;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
 }
 
-/* Responsive para móviles */
+.navbar .flecha img {
+  width: 100%;
+  height: auto;
+  border-radius: 0;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
     body {
         padding: 1rem;
@@ -145,20 +152,8 @@ h1 {
         bottom: 10px;
         left: 10px;
     }
-
-    .navbar,
-    .navbar2 {
-        padding: 10px;
-        gap: 10px;
-    }
-
-    .navbar a {
-        font-size: 1rem;
-        padding: 8px 12px;
-    }
 }
 
-/* Celulares más pequeños */
 @media (max-width: 480px) {
     h1 {
         font-size: 12vw;
@@ -176,7 +171,6 @@ h1 {
     }
 }
 
-/* Tablets y pantallas medianas, ejemplo Surface Pro 7 vertical */
 @media (max-width: 1024px) {
     h1 {
         font-size: 6vw;
@@ -199,26 +193,21 @@ h1 {
         font-size: 1rem;
         padding: 8px 14px;
     }
-
-    .navbar a {
-        font-size: 1rem;
-        padding: 8px 12px;
-    }
-@media (min-width: 1440px) {
-  #video-background {
-    object-fit: contain; /* o 'cover' según prefieras */
-    width: 100vw;
-    height: auto;
-    max-height: 100vh;
-  }
-
-  h1 {
-    font-size: 4vh; /* O algún tamaño que se vea bien en laptop */
-  }
-
-  #countdown {
-    font-size: 10vw; /* Ajusta tamaño del contador */
-  }
 }
 
+@media (min-width: 1440px) {
+    #video-background {
+        object-fit: contain;
+        width: 100vw;
+        height: auto;
+        max-height: 100vh;
+    }
+
+    h1 {
+        font-size: 4vh;
+    }
+
+    #countdown {
+        font-size: 10vw;
+    }
 }
