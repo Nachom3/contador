@@ -141,12 +141,12 @@
             let currentDay = now.getDay();
             let daysToAdd = 0;
 
-            if (currentDay === 6) {
+            if (currentDay === 7) {
                 if (now.getHours() > 0 || now.getMinutes() > 0 || now.getSeconds() > 0) {
                     daysToAdd = 7;
                 }
             } else {
-                daysToAdd = (6 - currentDay);
+                daysToAdd = (7 - currentDay);
             }
 
             target.setDate(now.getDate() + daysToAdd);
