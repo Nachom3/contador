@@ -129,7 +129,7 @@ h1 {
 /* Responsive */
 @media (max-width: 768px) {
     h1 {
-        font-size: 15vw;
+        font-size: 4vw;
         margin-bottom: 2rem;
         transform: scale(1);
         max-width: 90vw;

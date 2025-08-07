@@ -36,8 +36,10 @@
 
     if (/iPhone|iPad|iPod/i.test(userAgent)) {
         video.style.objectFit = "cover";
+        document.body.classList.add('ios');
     } else if (/Android/i.test(userAgent)) {
         video.style.objectFit = "cover";
+        document.body.classList.add('android');
     } else {
         video.style.objectFit = "fill";
     }
