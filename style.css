@@ -204,4 +204,21 @@ h1 {
         font-size: 1rem;
         padding: 8px 12px;
     }
+@media (min-width: 1440px) {
+  #video-background {
+    object-fit: contain; /* o 'cover' según prefieras */
+    width: 100vw;
+    height: auto;
+    max-height: 100vh;
+  }
+
+  h1 {
+    font-size: 4vh; /* O algún tamaño que se vea bien en laptop */
+  }
+
+  #countdown {
+    font-size: 10vw; /* Ajusta tamaño del contador */
+  }
+}
+
 }

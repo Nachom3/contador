@@ -1,0 +1,71 @@
+/* Reset y body full screen sin scroll */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-family: 'Inter', sans-serif;
+  background: black;
+  color: white;
+}
+
+/* Contenedor flex 100% ancho y alto */
+.image-container {
+  display: flex;
+  width: 100vw;
+  height: 100vh; /* altura total de la pantalla */
+}
+
+/* Cada imagen ocupa exactamente la mitad de ancho y todo el alto */
+.image-box {
+  flex: 1;
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  cursor: pointer;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* Text overlay centrado abajo */
+.overlay-text {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  text-align: center;
+  font-size: 3rem;
+  font-weight: 900;
+  color: white;
+  text-shadow: 0 0 10px rgba(0,0,0,0.8);
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Fondos específicos (cambiá por tus rutas o URLs) */
+.image-box.congo {
+  background-image: url('elem/congo.jpg');
+}
+
+.image-box.otto {
+  background-image: url('elem/ottojueves.jpg');
+}
+
+/* Efecto hover: sobresalir */
+.image-box:hover {
+  transform: translateY(-20px) scale(1.05);
+  box-shadow: 0 20px 30px rgba(255,255,255,0.7);
+  z-index: 10;
+}
+
+/* Responsive: para móviles, apilar vertical */
+@media (max-width: 768px) {
+  .image-container {
+    flex-direction: column;
+  }
+  .image-box {
+    height: 50vh;
+    width: 100vw;
+  }
+  .overlay-text {
+    font-size: 2rem;
+  }
+}
