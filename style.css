@@ -3,7 +3,8 @@ body {
     height: 100vh;
     margin: 0;
     color: #fff;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -25,7 +26,7 @@ body {
 
 /* Título principal */
 h1 {
-    font-size: 5vh;
+    font-size: 3vh;
     font-weight: bold;
     margin: 0 0 1rem 0;
     text-transform: uppercase;
@@ -108,37 +109,86 @@ h1 {
     display: flex;
     gap: 20px;
     z-index: 100;
-
 }
 
-.navbar2 a {
-    font-size: 1.2rem;
-    font-weight: bold;
-    background: white;
-    color: black;
-    padding: 10px 20px;
-    border-radius: 10px;
-    text-decoration: none;
-    transition: transform 0.2s ease-in-out;
-}
-
-.navbar2 a:hover {
-    transform: scale(1.05);
-}
-
-/* Responsive */
+/* Responsive para móviles */
 @media (max-width: 768px) {
+    body {
+        padding: 1rem;
+        overflow: auto;
+    }
+
     h1 {
-        font-size: 4vw;
-        margin-bottom: 2rem;
+        font-size: 10vw;
+        margin-bottom: 1.5rem;
         transform: scale(1);
-        max-width: 90vw;
-        letter-spacing: 0.3rem;
-        line-height: 1.1;
+        max-width: 100%;
+        letter-spacing: 0.2rem;
+        line-height: 1.2;
+        white-space: normal;
     }
 
     #countdown {
-        font-size: 15vw;
+        font-size: 18vw;
+        padding: 0.5rem;
+    }
+
+    .mensaje {
+        font-size: 4vw;
+        bottom: 10px;
+        right: 10px;
+    }
+
+    #unmute-btn {
+        font-size: 1rem;
+        padding: 6px 12px;
+        bottom: 10px;
+        left: 10px;
+    }
+
+    .navbar,
+    .navbar2 {
+        padding: 10px;
+        gap: 10px;
+    }
+
+    .navbar a {
+        font-size: 1rem;
+        padding: 8px 12px;
+    }
+}
+
+/* Celulares más pequeños */
+@media (max-width: 480px) {
+    h1 {
+        font-size: 12vw;
+        transform: scale(1);
+        max-width: 100%;
+        white-space: normal;
+    }
+
+    #countdown {
+        font-size: 18vw;
+    }
+
+    .mensaje {
+        font-size: 5vw;
+    }
+}
+
+/* Tablets y pantallas medianas, ejemplo Surface Pro 7 vertical */
+@media (max-width: 1024px) {
+    h1 {
+        font-size: 6vw;
+        transform: scale(1);
+        max-width: 90vw;
+        white-space: normal;
+        line-height: 1.2;
+        letter-spacing: 0.4rem;
+    }
+
+    #countdown {
+        font-size: 10vw;
     }
 
     .mensaje {
@@ -147,6 +197,11 @@ h1 {
 
     #unmute-btn {
         font-size: 1rem;
-        padding: 8px 16px;
+        padding: 8px 14px;
+    }
+
+    .navbar a {
+        font-size: 1rem;
+        padding: 8px 12px;
     }
 }
