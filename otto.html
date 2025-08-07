@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Otto</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <a href="index.html">INICIO</a>
+    <a href="congo.html">CONGO</a>
+  </div>
+
+  <!-- Video fondo -->
+  <video autoplay muted loop playsinline id="video-background">
+    <source src="elem/otto.mp4" type="video/mp4">
+    Tu navegador no soporta video HTML5.
+  </video>
+
+  <!-- Botón de sonido -->
+  <button id="unmute-btn">🔊 Activar sonido</button>
+
+  <!-- Contenido -->
+  <h1>CONTADOR PARA OTTO</h1>
+  <div id="countdown">Cargando...</div>
+  <div class="mensaje">Ottini contadorini</div>
+
+  <!-- Script contador -->
+  <script>
+    const video = document.getElementById('video-background');
+    const unmuteBtn = document.getElementById('unmute-btn');
+    const userAgent = navigator.userAgent;
+
+    if (/iPhone|iPad|iPod/i.test(userAgent)) {
+        video.style.objectFit = "cover";
+    } else if (/Android/i.test(userAgent)) {
+        video.style.objectFit = "cover";
+    } else {
+        video.style.objectFit = "fill";
+    }
+
+    unmuteBtn.addEventListener('click', () => {
+        video.muted = false;
+        video.play();
+        unmuteBtn.style.display = 'none';
+    });
+
+    function getNextSaturdayMidnight() {
+        const now = new Date();
+        const target = new Date(now);
+        let currentDay = now.getDay();
+        let daysToAdd = 0;
+
+        if (currentDay === 7) {
+            if (now.getHours() > 0 || now.getMinutes() > 0 || now.getSeconds() > 0) {
+                daysToAdd = 4;
+            }
+        } else {
+            daysToAdd = (5 - currentDay);
+        }
+
+        target.setDate(now.getDate() + daysToAdd);
+        target.setHours(0, 0, 0, 0);
+        return target;
+    }
+
+    const countdownDisplay = document.getElementById('countdown');
+
+    function updateCountdown() {
+        const now = new Date();
+        const targetDate = getNextSaturdayMidnight();
+        const timeRemaining = targetDate.getTime() - now.getTime();
+
+        if (timeRemaining <= 0) {
+            countdownDisplay.textContent = "Hora de hacer lo de nosotro";
+            clearInterval(countdownInterval);
+            return;
+        }
+
+        const totalSeconds = Math.floor(timeRemaining / 1000);
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+
+        const formatTime = (num) => String(num).padStart(2, '0');
+        countdownDisplay.textContent = `${formatTime(hours)}:${formatTime(minutes)}:${formatTime(seconds)}`;
+    }
+
+    updateCountdown();
+    const countdownInterval = setInterval(updateCountdown, 1000);
+  </script>
+</body>
+</html>

@@ -4,180 +4,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CONTADOR PARA CONGO</title>
+    <title>CONTADOR PARA LA NOCHE</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            height: 100vh;
-            margin: 0;
-            color: #fff;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-        #video-background {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            width: 100vw;
-            height: 100vh;
-            object-fit: fill; /* Configuración por defecto: PC */
-            transform: translate(-50%, -50%);
-            z-index: -1;
-        }
-        h1 {
-            font-size: 40vh;
-            font-weight: bold;
-            margin: 0 0 1rem 0;
-            text-transform: uppercase;
-            letter-spacing: 0.7rem;
-            line-height: 0.9;
-            white-space: nowrap;
-            transform: scale(2);
-        }
-
-        /* Contador */
-        #countdown {
-            font-size: 17vw;
-            font-weight: bold;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-            padding: 1rem;
-            border-radius: 0.75rem;
-            white-space: nowrap;
-        }
-
-        /* Texto inferior derecho fachero en blanco */
-        .mensaje {
-            position: fixed;
-            bottom: 20px;
-            right: 30px;
-            font-size: 1.8vw;
-            font-weight: bold;
-            color: #000000;
-            text-shadow:
-                0 0 5px #fff,
-                0 0 10px #fff,
-                0 0 20px #fff;
-        }
-
-        /* Botón de sonido */
-        #unmute-btn {
-            position: fixed;
-            bottom: 20px;
-            left: 30px;
-            font-size: 1.2rem;
-            background: rgba(0,0,0,0.6);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 10px;
-            cursor: pointer;
-            z-index: 10;
-        }
-
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 15vw;
-                margin-bottom: 2rem;
-                transform: scale(1);
-                max-width: 90vw;
-                letter-spacing: 0.3rem;
-                line-height: 1.1;
-            }
-            #countdown {
-                font-size: 15vw;
-            }
-            .mensaje {
-                font-size: 2.5vw;
-            }
-            #unmute-btn {
-                font-size: 1rem;
-                padding: 8px 16px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <video autoplay muted loop playsinline id="video-background">
-        <source src="elem/nosotro.mp4" type="video/mp4">
-        Tu navegador no soporta video HTML5.
-    </video>
+<body class="bg-black text-white flex flex-col justify-center items-center text-center">
 
-    <button id="unmute-btn">🔊 Activar sonido</button>
+  <!-- Navbar arriba a la izquierda -->
+  <div class="navbar2">
+    <a href="congo.html">CONGO</a>
+    <a href="otto.html">OTTO</a>
+  </div>
 
-    <h1>CONTADOR PARA CONGO</h1>
-    <div id="countdown">Cargando...</div>
-    <div class="mensaje">Nosotro tenemos que hace lo de nosotro</div>
-
-    <script>
-        const video = document.getElementById('video-background');
-        const unmuteBtn = document.getElementById('unmute-btn');
-        const userAgent = navigator.userAgent;
-
-        // Configuración de video según dispositivo
-        if (/iPhone|iPad|iPod/i.test(userAgent)) {
-            video.style.objectFit = "cover";
-        } else if (/Android/i.test(userAgent)) {
-            video.style.objectFit = "cover";
-        } else {
-            video.style.objectFit = "fill";
-        }
-
-        // Botón para activar sonido
-        unmuteBtn.addEventListener('click', () => {
-            video.muted = false;
-            video.play();
-            unmuteBtn.style.display = 'none';
-        });
-
-        // Función para obtener próximo sábado a medianoche
-        function getNextSaturdayMidnight() {
-            const now = new Date();
-            const target = new Date(now);
-            let currentDay = now.getDay();
-            let daysToAdd = 0;
-
-            if (currentDay === 7) {
-                if (now.getHours() > 0 || now.getMinutes() > 0 || now.getSeconds() > 0) {
-                    daysToAdd = 7;
-                }
-            } else {
-                daysToAdd = (7 - currentDay);
-            }
-
-            target.setDate(now.getDate() + daysToAdd);
-            target.setHours(0, 0, 0, 0);
-            return target;
-        }
-
-        const countdownDisplay = document.getElementById('countdown');
-
-        function updateCountdown() {
-            const now = new Date();
-            const targetDate = getNextSaturdayMidnight();
-            const timeRemaining = targetDate.getTime() - now.getTime();
-
-            if (timeRemaining <= 0) {
-                countdownDisplay.textContent = "Hora de hacer lo de nosotro";
-                clearInterval(countdownInterval);
-                return;
-            }
-
-            const totalSeconds = Math.floor(timeRemaining / 1000);
-            const hours = Math.floor(totalSeconds / 3600);
-            const minutes = Math.floor((totalSeconds % 3600) / 60);
-            const seconds = totalSeconds % 60;
-
-            const formatTime = (num) => String(num).padStart(2, '0');
-            countdownDisplay.textContent = `${formatTime(hours)}:${formatTime(minutes)}:${formatTime(seconds)}`;
-        }
-
-        updateCountdown();
-        const countdownInterval = setInterval(updateCountdown, 1000);
-    </script>
+  <!-- Contenido central -->
+  <h1 class="text-6xl font-bold mb-10">INICIO</h1>
 </body>
+
 </html>
+
+

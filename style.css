@@ -1,0 +1,152 @@
+body {
+    font-family: 'Inter', sans-serif;
+    height: 100vh;
+    margin: 0;
+    color: #fff;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: black;
+}
+
+#video-background {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 100vw;
+    height: 100vh;
+    object-fit: fill;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+}
+
+/* Título principal */
+h1 {
+    font-size: 5vh;
+    font-weight: bold;
+    margin: 0 0 1rem 0;
+    text-transform: uppercase;
+    letter-spacing: 0.7rem;
+    line-height: 0.9;
+    white-space: nowrap;
+    transform: scale(2);
+}
+
+/* Contador */
+#countdown {
+    font-size: 17vw;
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    padding: 1rem;
+    border-radius: 0.75rem;
+    white-space: nowrap;
+}
+
+/* Mensaje final */
+.mensaje {
+    position: fixed;
+    bottom: 20px;
+    right: 30px;
+    font-size: 1.8vw;
+    font-weight: bold;
+    color: #000;
+    text-shadow:
+        0 0 5px #fff,
+        0 0 10px #fff,
+        0 0 20px #fff;
+}
+
+/* Botón de sonido */
+#unmute-btn {
+    position: fixed;
+    bottom: 20px;
+    left: 30px;
+    font-size: 1.2rem;
+    background: rgba(0,0,0,0.6);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+/* Navbar arriba a la izquierda */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 20px 30px;
+    display: flex;
+    gap: 20px;
+    z-index: 100;
+}
+
+.navbar a {
+    font-size: 1.2rem;
+    font-weight: bold;
+    background: white;
+    color: black;
+    padding: 10px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: transform 0.2s ease-in-out;
+}
+
+.navbar a:hover {
+    transform: scale(1.05);
+}
+
+.navbar2 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 20px 30px;
+    display: flex;
+    gap: 20px;
+    z-index: 100;
+
+}
+
+.navbar2 a {
+    font-size: 1.2rem;
+    font-weight: bold;
+    background: white;
+    color: black;
+    padding: 10px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: transform 0.2s ease-in-out;
+}
+
+.navbar2 a:hover {
+    transform: scale(1.05);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 15vw;
+        margin-bottom: 2rem;
+        transform: scale(1);
+        max-width: 90vw;
+        letter-spacing: 0.3rem;
+        line-height: 1.1;
+    }
+
+    #countdown {
+        font-size: 15vw;
+    }
+
+    .mensaje {
+        font-size: 2.5vw;
+    }
+
+    #unmute-btn {
+        font-size: 1rem;
+        padding: 8px 16px;
+    }
+}
