@@ -86,15 +86,24 @@ h1 {
 }
 
 /* Logo a la izquierda con círculo */
-.navbar .logo {
-  width:80px;
-  height: 80px;
+.boton-circular {
+  display: inline-flex;
+  align-items: left;
+  justify-content: left;
+  width: 90px;
+  height: 90px;
+  background: #ff5e00;
+  color: #fff;
   border-radius: 50%;
-  background-size: cover;
-  background-position: center;
-  border: 2px solid white;
-  cursor: pointer;
-  transition: transform 0.2s ease-in-out;
+  font-size: 3em;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  transition: background 0.2s, transform 0.2s;
+  margin: 10px;
+}
+.boton-circular:hover {
+  background: #ff2e00;
+  transform: scale(2);
 }
 
 .navbar .logo:hover {
@@ -314,4 +323,54 @@ button:active {
 .contador {
   font-size: 1.2em;
   margin-bottom: 10px;
+}
+
+/* Agrega esto a tu style.css */
+.ruleta-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#ruleta {
+  display: block;
+  margin: 0 auto;
+}
+#girar {
+  margin-top: 20px;
+}
+
+.boton-circular {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;      /* más grande */
+  height: 100px;     /* más grande */
+  background: #ff5e00;
+  color: #fff;
+  border-radius: 50%;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  transition: background 0.2s, transform 0.2s;
+  margin: 10px;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.boton-circular:hover {
+  background: #ff2e00;
+  transform: scale(1.1);
+}
+
+.boton-circular .icono-ruleta {
+  width: 60px;   /* ajusta el tamaño de la imagen */
+  height: 60px;
+  object-fit: contain;
+}
+
+.boton-circular.ruleta-izq {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
 }

@@ -1,107 +1,128 @@
-// Configuración de la ruleta
 const premios = [
   { texto: "QR", color: "#00e676", peso: 2 },
+  { texto: "Nada", color: "#ff1744", peso: 1 },
   { texto: "Combo", color: "#2979ff", peso: 2 },
-  { texto: "Nada", color: "#ff1744", peso: 1 },
-  { texto: "Nada", color: "#ff1744", peso: 1 },
   { texto: "Nada", color: "#ff1744", peso: 1 },
   { texto: "QR", color: "#00e676", peso: 2 },
+  { texto: "Nada", color: "#ff1744", peso: 1 },
   { texto: "Combo", color: "#2979ff", peso: 2 },
 ];
-// Para que QR y Combo ocupen más espacio, se repiten y tienen más peso visual
 
 const TOTAL_TIRADAS = 10;
-let tiradasRestantes = [TOTAL_TIRADAS, TOTAL_TIRADAS];
+let tiradasRestantes = TOTAL_TIRADAS;
 
-// Dibuja la ruleta
-function dibujarRuleta(canvas, premios) {
+function dibujarRuleta(canvas, premios, angulo = 0) {
   const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.save();
+  ctx.translate(150, 150);
+  ctx.rotate(angulo);
+
   const totalPeso = premios.reduce((a, b) => a + b.peso, 0);
   let anguloInicio = 0;
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
   premios.forEach(premio => {
-    const angulo = (premio.peso / totalPeso) * 2 * Math.PI;
+    const anguloPremio = (premio.peso / totalPeso) * 2 * Math.PI;
     ctx.beginPath();
-    ctx.moveTo(150, 150);
-    ctx.arc(150, 150, 140, anguloInicio, anguloInicio + angulo);
+    ctx.moveTo(0, 0);
+    ctx.arc(0, 0, 140, anguloInicio, anguloInicio + anguloPremio);
     ctx.fillStyle = premio.color;
     ctx.fill();
+    // Texto
     ctx.save();
-    ctx.translate(150, 150);
-    ctx.rotate(anguloInicio + angulo / 2);
+    ctx.rotate(anguloInicio + anguloPremio / 2);
     ctx.textAlign = "right";
     ctx.font = "bold 18px Arial";
     ctx.fillStyle = "#222";
     ctx.fillText(premio.texto, 120, 10);
     ctx.restore();
-    anguloInicio += angulo;
+    anguloInicio += anguloPremio;
   });
-  // Flecha
+  ctx.restore();
+
+  // Triángulo arriba (puntero)
   ctx.beginPath();
-  ctx.moveTo(150, 10);
-  ctx.lineTo(140, 30);
-  ctx.lineTo(160, 30);
+  ctx.moveTo(150, 10); // punta arriba
+  ctx.lineTo(140, 35);
+  ctx.lineTo(160, 35);
   ctx.closePath();
   ctx.fillStyle = "#fff";
+  ctx.strokeStyle = "#222";
+  ctx.lineWidth = 2;
   ctx.fill();
+  ctx.stroke();
 }
 
-// Siempre devuelve el índice de un "Nada"
 function obtenerNadaIndex() {
-  // Busca los índices de los "Nada"
   const nadaIndices = premios
     .map((p, i) => p.texto === "Nada" ? i : -1)
     .filter(i => i !== -1);
-  // Elige uno al azar
   return nadaIndices[Math.floor(Math.random() * nadaIndices.length)];
 }
 
-// Maneja el giro de la ruleta
-function girarRuleta(idx) {
-  if (tiradasRestantes[idx] <= 0) {
-    document.getElementById(`resultado${idx+1}`).textContent = "¡No quedan tiradas!";
+function girarRuleta() {
+  if (tiradasRestantes <= 0) {
+    document.getElementById(`resultado`).textContent = "¡No quedan tiradas!";
     return;
   }
-  tiradasRestantes[idx]--;
-  document.getElementById(`tiradas${idx+1}`).textContent = `Tiradas restantes: ${tiradasRestantes[idx]}`;
-  // Siempre sale "Nada"
+  tiradasRestantes--;
+  document.getElementById(`tiradas`).textContent = `Tiradas restantes: ${tiradasRestantes}`;
   const nadaIndex = obtenerNadaIndex();
-  animarRuleta(document.getElementById(`ruleta${idx+1}`), nadaIndex, () => {
-    document.getElementById(`resultado${idx+1}`).textContent = "Nada... ¡Troll!";
+  animarRuleta(document.getElementById(`ruleta`), nadaIndex, () => {
+    document.getElementById(`resultado`).textContent = "Nada... ¡Troll!";
   });
 }
 
-// Animación simple de la ruleta
 function animarRuleta(canvas, premioIndex, callback) {
-  let vueltas = 20 + Math.floor(Math.random() * 5);
-  let anguloActual = 0;
   const totalPeso = premios.reduce((a, b) => a + b.peso, 0);
-  // Calcula el ángulo final para que caiga en el premioIndex
+
+  // Ángulo final para que caiga en el premioIndex (puntero arriba)
   let anguloPremio = 0;
-  for (let i = 0; i <= premioIndex; i++) {
+  for (let i = 0; i < premioIndex; i++) {
     anguloPremio += (premios[i].peso / totalPeso) * 2 * Math.PI;
   }
-  anguloPremio -= ((premios[premioIndex].peso / totalPeso) * Math.PI);
+  anguloPremio += ((premios[premioIndex].peso / totalPeso) * Math.PI);
 
-  function animar() {
-    if (vueltas > 0) {
-      anguloActual += 0.3 + vueltas * 0.01;
-      vueltas--;
-      canvas.style.transform = `rotate(${anguloActual}rad)`;
-      requestAnimationFrame(animar);
+  // Gira muchas vueltas (ej: 8 a 12 vueltas)
+  const vueltas = 8 + Math.floor(Math.random() * 5);
+  const anguloFinal = vueltas * 2 * Math.PI + (2 * Math.PI - anguloPremio);
+
+  let start = null;
+  const duracion = 3000; // 3 segundos
+
+  function animateRuleta(timestamp) {
+    if (!start) start = timestamp;
+    const elapsed = timestamp - start;
+    // Ease out
+    const t = Math.min(elapsed / duracion, 1);
+    const ease = 1 - Math.pow(1 - t, 3);
+    const anguloActual = ease * anguloFinal;
+    dibujarRuleta(canvas, premios, anguloActual);
+    if (t < 1) {
+      requestAnimationFrame(animateRuleta);
     } else {
-      canvas.style.transform = `rotate(${anguloPremio}rad)`;
+      dibujarRuleta(canvas, premios, anguloFinal);
       callback();
     }
   }
-  animar();
+  requestAnimationFrame(animateRuleta);
 }
 
-// Contador regresivo
+// Contador regresivo hasta el jueves para viernes a las 00:00
+function getProximoViernes() {
+  const ahora = new Date();
+  let dia = ahora.getDay();
+  let diasParaViernes = (5 - dia + 7) % 7;
+  if (diasParaViernes === 0 && ahora.getHours() >= 0) diasParaViernes = 7;
+  const proximoViernes = new Date(ahora);
+  proximoViernes.setDate(ahora.getDate() + diasParaViernes);
+  proximoViernes.setHours(0, 0, 0, 0);
+  return proximoViernes;
+}
+
 function iniciarContador(id, fechaObjetivo) {
   function actualizar() {
     const ahora = new Date();
-    const diff = fechaObjetivo - ahora;
+    let diff = fechaObjetivo - ahora;
     if (diff <= 0) {
       document.getElementById(id).textContent = "¡Ya empezó!";
       return;
@@ -118,16 +139,11 @@ function iniciarContador(id, fechaObjetivo) {
 
 // Inicialización
 window.onload = function() {
-  dibujarRuleta(document.getElementById('ruleta1'), premios);
-  dibujarRuleta(document.getElementById('ruleta2'), premios);
-  document.getElementById('tiradas1').textContent = `Tiradas restantes: ${TOTAL_TIRADAS}`;
-  document.getElementById('tiradas2').textContent = `Tiradas restantes: ${TOTAL_TIRADAS}`;
-  document.getElementById('girar1').onclick = () => girarRuleta(0);
-  document.getElementById('girar2').onclick = () => girarRuleta(1);
+  dibujarRuleta(document.getElementById('ruleta'), premios);
+  document.getElementById('tiradas').textContent = `Tiradas restantes: ${TOTAL_TIRADAS}`;
+  document.getElementById('girar').onclick = () => girarRuleta();
 
-  // Cambia la fecha objetivo a la de tu evento
-  const fechaEvento = new Date();
-  fechaEvento.setHours(fechaEvento.getHours() + 5); // Por ejemplo, faltan 5 horas
-  iniciarContador('contador1', fechaEvento);
-  iniciarContador('contador2', fechaEvento);
+  // Contador hasta el jueves para viernes a las 00:00
+  const fechaEvento = getProximoViernes();
+  iniciarContador('contador', fechaEvento);
 };
