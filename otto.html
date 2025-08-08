@@ -28,7 +28,7 @@
   <div id="countdown">Cargando...</div>
   <div class="mensaje">Ottini contadorini</div>
 
-  <!-- Script contador -->
+  <!-- Script contador CORREGIDO -->
   <script>
     const video = document.getElementById('video-background');
     const unmuteBtn = document.getElementById('unmute-btn');
@@ -48,35 +48,39 @@
         unmuteBtn.style.display = 'none';
     });
 
-    function getNextSaturdayMidnight() {
+    function getNextFridayMidnight() {
         const now = new Date();
         const target = new Date(now);
-        let currentDay = now.getDay();
-        let daysToAdd = 0;
-
-        if (currentDay === 7) {
-            if (now.getHours() > 0 || now.getMinutes() > 0 || now.getSeconds() > 0) {
-                daysToAdd = 4;
-            }
+        
+        // Calcular días hasta el próximo viernes
+        // 0=domingo, 1=lunes, 2=martes, 3=miércoles, 4=jueves, 5=viernes, 6=sábado
+        const currentDay = now.getDay();
+        
+        // Si hoy es viernes y ya pasó la medianoche
+        if (currentDay === 5 && now.getHours() >= 0) {
+            // Saltar al próximo viernes
+            target.setDate(now.getDate() + 7);
         } else {
-            daysToAdd = (5 - currentDay);
+            // Calcular días restantes hasta el próximo viernes
+            const daysUntilFriday = (5 - currentDay + 7) % 7;
+            target.setDate(now.getDate() + daysUntilFriday);
         }
-
-        target.setDate(now.getDate() + daysToAdd);
-        target.setHours(0, 0, 0, 0);
+        
+        target.setHours(0, 0, 0, 0); // Medianoche
         return target;
     }
 
     const countdownDisplay = document.getElementById('countdown');
+    let targetDate = getNextFridayMidnight();
 
     function updateCountdown() {
         const now = new Date();
-        const targetDate = getNextSaturdayMidnight();
         const timeRemaining = targetDate.getTime() - now.getTime();
 
+        // Si llegó a cero, actualizar para el próximo viernes
         if (timeRemaining <= 0) {
-            countdownDisplay.textContent = "Hora de hacer lo de nosotro";
-            clearInterval(countdownInterval);
+            targetDate = getNextFridayMidnight();
+            updateCountdown();
             return;
         }
 
