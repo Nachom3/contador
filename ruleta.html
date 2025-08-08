@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Ruleta Troll Otto</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>¡Cuenta regresiva para la jodita!</h1>
+  <div class="contadores">
+    <div>
+      <h2>Boliche 1</h2>
+      <div id="contador1" class="contador"></div>
+      <div class="ruleta-container">
+        <canvas id="ruleta1" width="300" height="300"></canvas>
+        <button id="girar1">Girar</button>
+        <div id="resultado1" class="resultado"></div>
+        <div id="tiradas1" class="tiradas"></div>
+      </div>
+    </div>
+    <div>
+      <h2>Boliche 2</h2>
+      <div id="contador2" class="contador"></div>
+      <div class="ruleta-container">
+        <canvas id="ruleta2" width="300" height="300"></canvas>
+        <button id="girar2">Girar</button>
+        <div id="resultado2" class="resultado"></div>
+        <div id="tiradas2" class="tiradas"></div>
+      </div>
+    </div>
+  </div>
+  <script src="ruleta.js"></script>
+</body>
+</html>
