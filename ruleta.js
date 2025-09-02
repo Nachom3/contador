@@ -1,149 +1,89 @@
-const premios = [
-  { texto: "QR", color: "#00e676", peso: 2 },
-  { texto: "Nada", color: "#ff1744", peso: 1 },
-  { texto: "Combo", color: "#2979ff", peso: 2 },
-  { texto: "Nada", color: "#ff1744", peso: 1 },
-  { texto: "QR", color: "#00e676", peso: 2 },
-  { texto: "Nada", color: "#ff1744", peso: 1 },
-  { texto: "Combo", color: "#2979ff", peso: 2 },
-];
+document.addEventListener('DOMContentLoaded', () => {
+    // --- Elementos del DOM ---
+    const modal = document.getElementById('roulette-modal');
+    const openBtn = document.getElementById('open-roulette-btn');
+    const closeBtn = document.querySelector('.close-btn');
+    const spinBtn = document.getElementById('girar');
+    const canvas = document.getElementById('ruleta');
+    const resultadoDiv = document.getElementById('resultado');
+    const ctx = canvas.getContext('2d');
 
-const TOTAL_TIRADAS = 10;
-let tiradasRestantes = TOTAL_TIRADAS;
+    // --- Configuración de la Ruleta ---
+    const options = ["Combos", "NADA", "QRs", "NADA", "Combos", "NADA"];
+    const colors = ["#FF5733", "#E4C304", "#3357FF", "#E4C304", "#9B59B6", "#E4C304"];
+    const arc = 2 * Math.PI / options.length;
+    let isSpinning = false;
 
-function dibujarRuleta(canvas, premios, angulo = 0) {
-  const ctx = canvas.getContext('2d');
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.save();
-  ctx.translate(150, 150);
-  ctx.rotate(angulo);
+    // --- Funciones ---
+    function drawRoulette() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.strokeStyle = "black";
+        ctx.lineWidth = 2;
+        ctx.font = 'bold 20px Helvetica, Arial';
 
-  const totalPeso = premios.reduce((a, b) => a + b.peso, 0);
-  let anguloInicio = 0;
-  premios.forEach(premio => {
-    const anguloPremio = (premio.peso / totalPeso) * 2 * Math.PI;
-    ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.arc(0, 0, 140, anguloInicio, anguloInicio + anguloPremio);
-    ctx.fillStyle = premio.color;
-    ctx.fill();
-    // Texto
-    ctx.save();
-    ctx.rotate(anguloInicio + anguloPremio / 2);
-    ctx.textAlign = "right";
-    ctx.font = "bold 18px Arial";
-    ctx.fillStyle = "#222";
-    ctx.fillText(premio.texto, 120, 10);
-    ctx.restore();
-    anguloInicio += anguloPremio;
-  });
-  ctx.restore();
+        for (let i = 0; i < options.length; i++) {
+            const angle = i * arc;
+            ctx.fillStyle = colors[i];
 
-  // Triángulo arriba (puntero)
-  ctx.beginPath();
-  ctx.moveTo(150, 10); // punta arriba
-  ctx.lineTo(140, 35);
-  ctx.lineTo(160, 35);
-  ctx.closePath();
-  ctx.fillStyle = "#fff";
-  ctx.strokeStyle = "#222";
-  ctx.lineWidth = 2;
-  ctx.fill();
-  ctx.stroke();
-}
+            ctx.beginPath();
+            ctx.arc(175, 175, 175, angle, angle + arc, false);
+            ctx.arc(175, 175, 0, angle + arc, angle, true);
+            ctx.stroke();
+            ctx.fill();
 
-function obtenerNadaIndex() {
-  const nadaIndices = premios
-    .map((p, i) => p.texto === "Nada" ? i : -1)
-    .filter(i => i !== -1);
-  return nadaIndices[Math.floor(Math.random() * nadaIndices.length)];
-}
-
-function girarRuleta() {
-  if (tiradasRestantes <= 0) {
-    document.getElementById(`resultado`).textContent = "¡No quedan tiradas!";
-    return;
-  }
-  tiradasRestantes--;
-  document.getElementById(`tiradas`).textContent = `Tiradas restantes: ${tiradasRestantes}`;
-  const nadaIndex = obtenerNadaIndex();
-  animarRuleta(document.getElementById(`ruleta`), nadaIndex, () => {
-    document.getElementById(`resultado`).textContent = "Nada... ¡Troll!";
-  });
-}
-
-function animarRuleta(canvas, premioIndex, callback) {
-  const totalPeso = premios.reduce((a, b) => a + b.peso, 0);
-
-  // Ángulo final para que caiga en el premioIndex (puntero arriba)
-  let anguloPremio = 0;
-  for (let i = 0; i < premioIndex; i++) {
-    anguloPremio += (premios[i].peso / totalPeso) * 2 * Math.PI;
-  }
-  anguloPremio += ((premios[premioIndex].peso / totalPeso) * Math.PI);
-
-  // Gira muchas vueltas (ej: 8 a 12 vueltas)
-  const vueltas = 8 + Math.floor(Math.random() * 5);
-  const anguloFinal = vueltas * 2 * Math.PI + (2 * Math.PI - anguloPremio);
-
-  let start = null;
-  const duracion = 3000; // 3 segundos
-
-  function animateRuleta(timestamp) {
-    if (!start) start = timestamp;
-    const elapsed = timestamp - start;
-    // Ease out
-    const t = Math.min(elapsed / duracion, 1);
-    const ease = 1 - Math.pow(1 - t, 3);
-    const anguloActual = ease * anguloFinal;
-    dibujarRuleta(canvas, premios, anguloActual);
-    if (t < 1) {
-      requestAnimationFrame(animateRuleta);
-    } else {
-      dibujarRuleta(canvas, premios, anguloFinal);
-      callback();
+            ctx.save();
+            ctx.fillStyle = "black";
+            ctx.translate(175 + Math.cos(angle + arc / 2) * 120, 175 + Math.sin(angle + arc / 2) * 120);
+            ctx.rotate(angle + arc / 2 + Math.PI / 2);
+            const text = options[i];
+            ctx.fillText(text, -ctx.measureText(text).width / 2, 0);
+            ctx.restore();
+        }
     }
-  }
-  requestAnimationFrame(animateRuleta);
-}
+    
+    function spin() {
+        if (isSpinning) return;
+        isSpinning = true;
+        resultadoDiv.innerHTML = "Girando...";
 
-// Contador regresivo hasta el jueves para viernes a las 00:00
-function getProximoViernes() {
-  const ahora = new Date();
-  let dia = ahora.getDay();
-  let diasParaViernes = (5 - dia + 7) % 7;
-  if (diasParaViernes === 0 && ahora.getHours() >= 0) diasParaViernes = 7;
-  const proximoViernes = new Date(ahora);
-  proximoViernes.setDate(ahora.getDate() + diasParaViernes);
-  proximoViernes.setHours(0, 0, 0, 0);
-  return proximoViernes;
-}
+        // 1. Encontrar los índices de todas las opciones "NADA"
+        const nadaIndices = options.map((opt, i) => opt === "NADA" ? i : -1).filter(i => i !== -1);
+        
+        // 2. Elegir al azar una de las porciones de "NADA" como objetivo
+        const targetIndex = nadaIndices[Math.floor(Math.random() * nadaIndices.length)];
 
-function iniciarContador(id, fechaObjetivo) {
-  function actualizar() {
-    const ahora = new Date();
-    let diff = fechaObjetivo - ahora;
-    if (diff <= 0) {
-      document.getElementById(id).textContent = "¡Ya empezó!";
-      return;
+        // 3. Calcular el ángulo exacto para detenerse en el medio de esa porción
+        const arcDegrees = 360 / options.length;
+        const targetAngle = (targetIndex * arcDegrees) + (arcDegrees / 2);
+        
+        // 4. Añadir varias vueltas completas (5-8) para el efecto de giro
+        const randomRotations = Math.floor(Math.random() * 4) + 5;
+        const totalRotation = (randomRotations * 360) - targetAngle;
+
+        // 5. Aplicar la rotación con CSS
+        canvas.style.transform = `rotate(${totalRotation}deg)`;
+        
+        // 6. Esperar a que la animación CSS termine para mostrar el resultado
+        setTimeout(() => {
+            resultadoDiv.innerHTML = `¡Trolleado! Salió: <span style="font-weight:bold; color:${colors[targetIndex]};">NADA</span>`;
+            isSpinning = false;
+        }, 5000); // IMPORTANTE: Este tiempo debe coincidir con la duración de la transición en CSS
     }
-    const horas = Math.floor(diff / (1000 * 60 * 60));
-    const minutos = Math.floor((diff / (1000 * 60)) % 60);
-    const segundos = Math.floor((diff / 1000) % 60);
-    document.getElementById(id).textContent =
-      `Faltan ${horas}h ${minutos}m ${segundos}s`;
-    setTimeout(actualizar, 1000);
-  }
-  actualizar();
-}
 
-// Inicialización
-window.onload = function() {
-  dibujarRuleta(document.getElementById('ruleta'), premios);
-  document.getElementById('tiradas').textContent = `Tiradas restantes: ${TOTAL_TIRADAS}`;
-  document.getElementById('girar').onclick = () => girarRuleta();
-
-  // Contador hasta el jueves para viernes a las 00:00
-  const fechaEvento = getProximoViernes();
-  iniciarContador('contador', fechaEvento);
-};
+    // --- Event Listeners del Modal ---
+    openBtn.onclick = function() {
+        modal.style.display = "flex";
+    }
+    closeBtn.onclick = function() {
+        modal.style.display = "none";
+    }
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+    spinBtn.addEventListener('click', spin);
+    
+    // Dibuja la ruleta al cargar la página
+    drawRoulette();
+});

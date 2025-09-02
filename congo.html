@@ -10,91 +10,37 @@
 
 <div class="navbar">
   <a href="otto.html" class="logo" style="background-image: url('elem/ottojueves2.png');" aria-label="Otto"></a>
+  
+  <button id="open-roulette-btn" class="boton-circular ruleta-izq">
+    <img src="elem/ruleta.png" alt="Abrir Ruleta" class="icono-ruleta"/>
+  </button>
 
   <a href="index.html" class="flecha">
     <img src="elem/volver-flecha.png" alt="Volver al inicio" />
   </a>
 </div>
 
-  <!-- Video fondo -->
   <video autoplay muted loop playsinline id="video-background">
     <source src="elem/nosotro.mp4" type="video/mp4">
     Tu navegador no soporta video HTML5.
   </video>
 
-  <!-- Botón de sonido -->
   <button id="unmute-btn">🔊</button>
 
-  <!-- Contenido -->
   <h1>CONTADOR PARA CONGO</h1>
   <div id="countdown">Cargando...</div>
   <div class="mensaje">Nosotro tenemos que hace lo de nosotro</div>
 
-  <!-- Script contador -->
-  <script>
-    const video = document.getElementById('video-background');
-    const unmuteBtn = document.getElementById('unmute-btn');
-    const userAgent = navigator.userAgent;
-
-    if (/iPhone|iPad|iPod/i.test(userAgent)) {
-        video.style.objectFit = "cover";
-        document.body.classList.add('ios');
-    } else if (/Android/i.test(userAgent)) {
-        video.style.objectFit = "cover";
-        document.body.classList.add('android');
-    } else {
-        video.style.objectFit = "fill";
-    }
-
-    unmuteBtn.addEventListener('click', () => {
-        video.muted = false;
-        video.play();
-        unmuteBtn.style.display = 'none';
-    });
-
-    function getNextSaturdayMidnight() {
-        const now = new Date();
-        const target = new Date(now);
-        let currentDay = now.getDay();
-        let daysToAdd = 0;
-
-        if (currentDay === 7) {
-            if (now.getHours() > 0 || now.getMinutes() > 0 || now.getSeconds() > 0) {
-                daysToAdd = 7;
-            }
-        } else {
-            daysToAdd = (7 - currentDay);
-        }
-
-        target.setDate(now.getDate() + daysToAdd);
-        target.setHours(0, 0, 0, 0);
-        return target;
-    }
-
-    const countdownDisplay = document.getElementById('countdown');
-
-    function updateCountdown() {
-        const now = new Date();
-        const targetDate = getNextSaturdayMidnight();
-        const timeRemaining = targetDate.getTime() - now.getTime();
-
-        if (timeRemaining <= 0) {
-            countdownDisplay.textContent = "Hora de hacer lo de nosotro";
-            clearInterval(countdownInterval);
-            return;
-        }
-
-        const totalSeconds = Math.floor(timeRemaining / 1000);
-        const hours = Math.floor(totalSeconds / 3600);
-        const minutes = Math.floor((totalSeconds % 3600) / 60);
-        const seconds = totalSeconds % 60;
-
-        const formatTime = (num) => String(num).padStart(2, '0');
-        countdownDisplay.textContent = `${formatTime(hours)}:${formatTime(minutes)}:${formatTime(seconds)}`;
-    }
-
-    updateCountdown();
-    const countdownInterval = setInterval(updateCountdown, 1000);
-  </script>
-</body>
+  <div id="roulette-modal" class="modal-overlay" style="display: none;">
+    <div class="modal-content">
+      <span class="close-btn">&times;</span>
+      <h2>¡Gira la Ruleta Troll!</h2>
+      <div class="ruleta-container">
+        <canvas id="ruleta" width="350" height="350"></canvas>
+        <button id="girar">Girar</button>
+        <div id="resultado" class="resultado"></div>
+      </div>
+    </div>
+  </div>
+  <script src="congo.js"></script> <script src="ruleta.js"></script> </body>
 </html>
